@@ -29,7 +29,7 @@ from urllib import request as urlrequest, error as urlerror
 
 NOTION_DB_URL = "https://www.notion.so/a817676241994d4bb08b09dd5b7249bc"
 DATA_SOURCE_ID = "6e5fde80-abef-443d-a263-f3b7aa6b6e21"
-WINDOW_START = date(2025, 10, 1)  # Q4 2025 forward per user 2026-06-02
+WINDOW_START = date(2025, 1, 1)   # 2025+ per user 2026-06-04
 SQL_SERVER = "trgintp3"
 SQL_DATABASE = "DataOperations"
 SECRETS_FALLBACK = r"C:\Users\tls2\.claude\secrets\notion_token.txt"
