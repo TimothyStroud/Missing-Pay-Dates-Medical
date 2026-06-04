@@ -1,0 +1,16 @@
+# Python artifacts
+__pycache__/
+*.pyc
+
+# Generated reports / outputs (rewritten every run)
+MissingPayDates*.html
+MissingPayDates*.xlsx
+cron_today*.json
+cron_backfill*.json
+seed_batch*.json
+seed_batches/
+*.jsonl
+
+# Secrets — never commit
+notion_token.txt
+*.secret
