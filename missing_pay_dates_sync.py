@@ -108,8 +108,8 @@ def fetch_clients():
         "Oxford_ARO", "PHS_NICE_ACP", "Premera", "PremeraMedAdvVIS",
         "Tufts_Audit_CIT", "Tufts_PublicPlan", "TuftsMedPref", "UnitedASO",
         "UnitedCosmos", "UnitedCSP", "UnitedUNET", "WellMark",
-        "KaiserAMBHI", "KaiserAMBCO", "KaiserAMBGA", "KaiserAMBNW",
-        "KaiserAMBN", "KaiserNCPareo", "KaiserSCPareo",
+        "KaiserAmbHI", "KaiserAmbCO", "KaiserAmbGA", "KaiserAmbNW",
+        "KaiserAmbN", "KaiserNCPareo", "KaiserSCPareo",
     ]
 
 
