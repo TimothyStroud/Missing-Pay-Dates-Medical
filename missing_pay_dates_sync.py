@@ -34,6 +34,22 @@ SQL_SERVER = "trgintp3"
 SQL_DATABASE = "DataOperations"
 SECRETS_FALLBACK = r"C:\Users\tls2\.claude\secrets\notion_token.txt"
 
+# Expected pay weekdays per client (Python weekday: Mon=0, Tue=1, Wed=2,
+# Thu=3, Fri=4, Sat=5, Sun=6). For clients listed here, a missing payment is
+# flagged "Not Received" ONLY on an expected weekday; other weekdays are not
+# expected to pay and are left unflagged. Per user 2026-06-11: the Kaiser Amb
+# feeds pay on specific weekdays (not daily), so flagging every weekday as
+# "Not Received" was a false alarm. Names must match vw_PayAmount casing.
+EXPECTED_PAY_WEEKDAYS = {
+    "KaiserAmbCO": {1, 4},   # Tue, Fri
+    "Kaiser_AmbS": {0, 3},   # Mon, Thu
+    "Kaiser_AmbM": {0, 2},   # Mon, Wed
+    "KaiserAmbNW": {1, 4},   # Tue, Fri
+    "KaiserAmbN":  {0, 3},   # Mon, Thu
+    "KaiserAmbHI": {2, 4},   # Wed, Fri
+    "KaiserAmbGA": {0, 3},   # Mon, Thu
+}
+
 
 def load_token() -> str:
     tok = os.environ.get("NOTION_INTEGRATION_TOKEN", "").strip()
@@ -186,9 +202,17 @@ def build_rows(window_start: date, window_end: date):
         holiday_name = holidays.get(d)
         for client in clients:
             amt = paid_by_client.get((client, d))
+            expected_wd = EXPECTED_PAY_WEEKDAYS.get(client)
             parts = []
             if amt is None:
-                parts.append("Weekend" if is_weekend else "Not Received")
+                if is_weekend:
+                    parts.append("Weekend")
+                elif expected_wd is None or d.weekday() in expected_wd:
+                    # No expected-weekday set → every weekday is expected (as
+                    # before). With a set → flag only on an expected weekday.
+                    parts.append("Not Received")
+                # else: weekday not in this feed's expected pay set — not
+                # expected to pay that day, so leave it unflagged.
             elif amt < 0:
                 parts.append("Negative Paid")
             if holiday_name:
