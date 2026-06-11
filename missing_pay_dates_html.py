@@ -51,6 +51,8 @@ HTML_TEMPLATE = """<!doctype html>
     --gray-dark: #555;
     --green: #c6efce;
     --green-dark: #006100;
+    --blue: #cfe8fb;
+    --blue-dark: #14517d;
   }
   * { box-sizing: border-box; }
   body {
@@ -159,6 +161,7 @@ HTML_TEMPLATE = """<!doctype html>
   .badge.holiday { background: #fff2cc; color: #806000; }
   .badge.paid { background: var(--green); color: var(--green-dark); }
   .badge.negpaid { background: #f8d7da; color: #c00; }
+  .badge.notexpected { background: var(--blue); color: var(--blue-dark); }
   .badge + .badge { margin-left: 4px; }
   .pager { display: flex; align-items: center; gap: 12px; margin-top: 12px; justify-content: flex-end; font-size: 13px; color: var(--muted); }
   .empty { padding: 24px; text-align: center; color: var(--muted); }
@@ -209,6 +212,7 @@ HTML_TEMPLATE = """<!doctype html>
         <option value="Weekend">Weekend only</option>
         <option value="Holiday">Holiday only</option>
         <option value="Negative Paid">Negative Paid only</option>
+        <option value="Not Expected">Not Expected only</option>
         <option value="Paid">Paid only</option>
       </select>
     </div>
@@ -284,6 +288,7 @@ HTML_TEMPLATE = """<!doctype html>
     if (c.indexOf('Weekend') !== -1) out.push('Weekend');
     if (c.indexOf('Holiday:') !== -1) out.push('Holiday');
     if (c.indexOf('Negative Paid') !== -1) out.push('Negative Paid');
+    if (c.indexOf('Not Expected') !== -1) out.push('Not Expected');
     // Paid = received any amount and not flagged Not Received/Weekend.
     // Negative Paid implies paid (just a refund/adjustment) so we still
     // add Paid alongside it.
@@ -376,7 +381,7 @@ HTML_TEMPLATE = """<!doctype html>
         const tr = document.createElement('tr');
         const ss = statusesOf(r);
         const hn = holidayNameOf(r);
-        const cls = {'Not Received': 'notrec', 'Weekend': 'weekend', 'Holiday': 'holiday', 'Negative Paid': 'negpaid', 'Paid': 'paid'};
+        const cls = {'Not Received': 'notrec', 'Weekend': 'weekend', 'Holiday': 'holiday', 'Negative Paid': 'negpaid', 'Paid': 'paid', 'Not Expected': 'notexpected'};
         const badges = ss.map(s => {
           const label = (s === 'Holiday' && hn) ? ('Holiday: ' + hn) : s;
           return '<span class="badge ' + cls[s] + '">' + label + '</span>';

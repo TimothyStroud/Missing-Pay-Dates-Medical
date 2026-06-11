@@ -211,8 +211,11 @@ def build_rows(window_start: date, window_end: date):
                     # No expected-weekday set → every weekday is expected (as
                     # before). With a set → flag only on an expected weekday.
                     parts.append("Not Received")
-                # else: weekday not in this feed's expected pay set — not
-                # expected to pay that day, so leave it unflagged.
+                else:
+                    # Feed not expected to pay this weekday — mark "Not Expected"
+                    # (light-blue badge) instead of leaving it blank, which the
+                    # HTML would otherwise render as the green "Paid" badge.
+                    parts.append("Not Expected")
             elif amt < 0:
                 parts.append("Negative Paid")
             if holiday_name:
